@@ -1,0 +1,14 @@
+{
+	"name": "pierrestoffe/localeredirector",
+	"description": "This plugin automatically redirects the visitor to their preferred locale",
+	"type": "craft-plugin",
+	"authors": [
+		{
+			"name": "Pierre Stoffe",
+			"homepage": "https://pierrestoffe.be"
+		}
+	],
+	"require": {
+		"composer/installers": "~1.0"
+	}
+}
