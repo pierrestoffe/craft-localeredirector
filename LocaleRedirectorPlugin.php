@@ -16,15 +16,18 @@ namespace Craft;
 class LocaleRedirectorPlugin extends BasePlugin
 {
     /**
-     * @return mixed
+     * Process if the current page might benefit from the locale redirect
      */
     public function init()
     {
         parent::init();
+        
+        if(!craft()->isConsole() && !craft()->request->isActionRequest() && !craft()->request->isLivePreview() && !craft()->request->isAjaxRequest() && craft()->request->isSiteRequest()) {
+            craft()->localeRedirector->redirectCheck();
+        }
     }
-
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -32,7 +35,7 @@ class LocaleRedirectorPlugin extends BasePlugin
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDescription()
     {
@@ -93,29 +96,5 @@ class LocaleRedirectorPlugin extends BasePlugin
     public function hasCpSection()
     {
         return false;
-    }
-
-    /**
-     */
-    public function onBeforeInstall()
-    {
-    }
-
-    /**
-     */
-    public function onAfterInstall()
-    {
-    }
-
-    /**
-     */
-    public function onBeforeUninstall()
-    {
-    }
-
-    /**
-     */
-    public function onAfterUninstall()
-    {
     }
 }
