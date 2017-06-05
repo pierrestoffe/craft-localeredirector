@@ -1,37 +1,63 @@
 # Locale Redirector plugin for Craft CMS
 
-This plugin automatically redirects the visitor to their preferred locale
+This plugin automatically redirects visitors to their preferred locale
 
-![Screenshot](resources/screenshots/plugin_logo.png)
+## Overview
+
+If you've ever developed a multilingual website, you've probably thought about automatically redirecting your visitors to their preferred locale. While it may have sounded simple at first, you obviously eventually realized it wasn't. Indeed, you have to take a few parameters into account:
+- The locales installed in Craft
+- The locale(s) accepted by your visitor's browser
+- The language links
+- Whether the page exists in the needed locale
+
+Locale Redirector mixes all these parameters together and provides you with a plug-and-play solution.
 
 ## Installation
 
-To install Locale Redirector, follow these steps:
+To install the Locale Redirector plugin, follow these steps:
 
-1. Download & unzip the file and place the `localeredirector` directory into your `craft/plugins` directory
-2.  -OR- do a `git clone https://github.com/pierrestoffe/localeredirector.git` directly into your `craft/plugins` folder.  You can then update it with `git pull`
-3.  -OR- install with Composer via `composer require pierrestoffe/localeredirector`
-4. Install plugin in the Craft Control Panel under Settings > Plugins
-5. The plugin folder should be named `localeredirector` for Craft to see it.  GitHub recently started appending `-master` (the branch name) to the name of the folder for zip file downloads.
+1. Download the [latest release](https://github.com/pierrestoffe/craft-localeredirector/releases/latest) & unzip the file
+2. Rename the directory into `localeredirector` if necessary
+3. Install the plugin in the Craft Control Panel under Settings > Plugins
 
-Locale Redirector works on Craft 2.4.x and Craft 2.5.x.
+Component-based Templating works on Craft 2.4.x and Craft 2.5.x.
 
-## Locale Redirector Overview
+## Using this plugin
 
--Insert text here-
+The only thing you have to modify is the language switcher section in your templates. The link's query string should include a `locale={{ locale }}` parameter, where `{{ locale }}` is the locale's id (`en_us`, `fr`, `de`,...). Doing so forces Locale Redirector to overwrite the locale cookie with the value of `locale`.
 
-## Configuring Locale Redirector
+Here is an example:
+```
+{% for locale in craft.i18n.getSiteLocales() %}
+    {% set localisedPage = null %}
+    {% if entry is defined %}
+       {% set localisedPage = craft.entries({
+           id: entry.id,
+           locale: locale.id
+       })[0] ?? null %}
+    {% elseif category is defined %}
+       {% set localisedPage = craft.categories({
+           id: category.id,
+           locale: locale.id
+       })[0] ?? null %}
+    {% endif %}
+    {% set linkUrl = localisedPage|length ? localisedPage.url : craft.config.siteUrl[locale.id] %}
+    <li>
+        <a href="{{ linkUrl }}?locale={{ locale }}" hreflang="{{ locale.id }}" lang="{{ locale.id }}">
+            <abbr title="{{ locale.nativeName|capitalize }}">{{ locale.id|upper }}</abbr>
+        </a>
+    </li>
+{% endfor %}
+```
 
--Insert text here-
-
-## Using Locale Redirector
-
--Insert text here-
-
-## Locale Redirector Roadmap
+## Roadmap
 
 Some things to do, and ideas for potential features:
 
-* Release it
+* Include a language switcher
+* Adapt for Craft 3
 
-Brought to you by [Pierre Stoffe](https://pierrestoffe.be)
+## Credits
+
+Brought to you by [Pierre Stoffe](https://pierrestoffe.be)  
+Kickstarted using [pluginfactory.io](https://pluginfactory.io)
