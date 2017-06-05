@@ -12,6 +12,8 @@ If you've ever developed a multilingual website, you've probably thought about a
 
 Locale Redirector mixes all these parameters together and provides you with a plug-and-play solution.
 
+It can also make educated guesses. For example, if your browser is set to accept the `en_us` locale but only the `en` locale is set in Craft, a match will still be made with the `en` locale. Obviously, if the `en_us` locale was to be set in Craft as well, that locale would be matched first.
+
 ## Installation
 
 To install the Locale Redirector plugin, follow these steps:

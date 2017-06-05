@@ -72,14 +72,31 @@ class LocaleRedirectorService extends BaseApplicationComponent
             }
         }
         
-        // Otherwise, let's try again, removing country codes
+        // Otherwise, let's try again, removing country codes in browser locales
         if(empty($locale_match)) {
-            foreach($browser_locales as $locale) {
-                $locale_short = substr($locale, 0, 2);
+            foreach($browser_locales as $browser_locale) {
+                $browser_locale_short = substr($browser_locale, 0, 2);
                 
-                foreach($site_locales as $locale) {
-                    if($locale == $locale_short) {
-                        $locale_match = $locale;
+                foreach($site_locales as $site_locale) {
+                    if($site_locale == $browser_locale_short) {
+                        $locale_match = $site_locale;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Otherwise, let's try again, removing country codes in browser locales
+        // and in site locales
+        if(empty($locale_match)) {
+            foreach($browser_locales as $browser_locale) {
+                $browser_locale_short = substr($browser_locale, 0, 2);
+                
+                foreach($site_locales as $site_locale) {
+                    $site_locale_short = substr($site_locale, 0, 2);
+                    
+                    if($site_locale_short == $browser_locale_short) {
+                        $locale_match = $site_locale;
                         break;
                     }
                 }
