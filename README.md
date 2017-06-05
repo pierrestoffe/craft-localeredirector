@@ -18,6 +18,7 @@ To install the Locale Redirector plugin, follow these steps:
 
 1. Download the [latest release](https://github.com/pierrestoffe/craft-localeredirector/releases/latest) & unzip the file
 2. Rename the directory into `localeredirector` if necessary
+3. Copy the `localeredirector` directory into your `craft/plugins` directory
 3. Install the plugin in the Craft Control Panel under Settings > Plugins
 
 Component-based Templating works on Craft 2.4.x and Craft 2.5.x.
