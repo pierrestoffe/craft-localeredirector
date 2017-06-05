@@ -2,7 +2,7 @@
 /**
  * Locale Redirector plugin for Craft CMS
  *
- * This plugin automatically redirects the visitor to their preferred locale
+ * This plugin automatically redirects visitors to their preferred locale
  *
  * @author    Pierre Stoffe
  * @copyright Copyright (c) 2017 Pierre Stoffe
@@ -39,7 +39,7 @@ class LocaleRedirectorPlugin extends BasePlugin
      */
     public function getDescription()
     {
-        return Craft::t('This plugin automatically redirects the visitor to their preferred locale');
+        return Craft::t('This plugin automatically redirects visitors to their preferred locale');
     }
 
     /**
