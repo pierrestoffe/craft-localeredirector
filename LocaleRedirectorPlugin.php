@@ -47,7 +47,7 @@ class LocaleRedirectorPlugin extends BasePlugin
      */
     public function getDocumentationUrl()
     {
-        return 'https://github.com/pierrestoffe/localeredirector/blob/master/README.md';
+        return 'https://github.com/pierrestoffe/craft-localeredirector/blob/master/README.md';
     }
 
     /**
@@ -55,7 +55,7 @@ class LocaleRedirectorPlugin extends BasePlugin
      */
     public function getReleaseFeedUrl()
     {
-        return 'https://raw.githubusercontent.com/pierrestoffe/localeredirector/master/releases.json';
+        return 'https://raw.githubusercontent.com/pierrestoffe/craft-localeredirector/master/releases.json';
     }
 
     /**
