@@ -1,7 +1,7 @@
 [
     {
-        "version": "1.0-0",
-        "downloadUrl": "https://github.com/pierrestoffe/craft-localeredirector/archive/v1.0-0.zip",
+        "version": "1.0.0",
+        "downloadUrl": "https://github.com/pierrestoffe/craft-localeredirector/archive/v1.0.0.zip",
         "date": "2017-06-06T14:08:55.829Z",
         "notes": [
             "[Changed] More accurate localized url",
