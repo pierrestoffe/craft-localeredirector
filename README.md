@@ -7,7 +7,7 @@ This plugin automatically redirects visitors to their preferred locale
 If you've ever developed a multilingual website, you've probably thought about automatically redirecting your visitors to their preferred locale. While it may have sounded simple at first, you obviously eventually realized it wasn't. Indeed, you have to take a few parameters into account:
 - The locales installed in Craft
 - The locale(s) accepted by your visitor's browser
-- The language links
+- The language switcher
 - Whether the page exists in the needed locale
 
 Locale Redirector mixes all these parameters together and provides you with a plug-and-play solution.
