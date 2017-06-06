@@ -19,7 +19,7 @@ class LocaleRedirectorService extends BaseApplicationComponent
     protected $query_string;
     public $cookie_name;
     public $cookie_expire;
-    
+
     public function __construct()
     {
         $this->base_url = craft()->request->getPath();
@@ -27,7 +27,7 @@ class LocaleRedirectorService extends BaseApplicationComponent
         $this->cookie_name = 'locale';
         $this->cookie_expire = time() + 60 * 60 * 24 * 30;
     }
-    
+
     /**
      * Process all parameters and act accordingly
      */
@@ -35,25 +35,25 @@ class LocaleRedirectorService extends BaseApplicationComponent
     {
         $guessed_locale = $this->query_string['locale'] ?? null;
         $new_localized_url = null;
-        
+
         // If the locale is forced by the query string
         if(!empty(craft()->request->getQuery('locale'))) {
             $this->setCookieLocale($guessed_locale);
         } else {
             $guessed_locale = $this->getGuessedLocale();
-            
+
             if(!empty($guessed_locale)) {
                 $new_localized_url = $this->getNewLocalizedUrl($guessed_locale);
                 $this->setCookieLocale($guessed_locale);
             }
         }
-        
+
         // Redirect (302) if redirecting to another locale is necessary
         if(!empty($new_localized_url)) {
             craft()->request->redirect($new_localized_url, true, 302);
         }
     }
-    
+
     /**
      * Check if a match can be made between the browser's locales and Craft's locales
      * @return string
@@ -63,7 +63,7 @@ class LocaleRedirectorService extends BaseApplicationComponent
         $locale_match = null;
         $browser_locales = craft()->request->getBrowserLanguages();
         $site_locales = craft()->i18n->getSiteLocaleIds();
-            
+
         // Loop through the list of available locale and find a perfect match
         foreach($browser_locales as $locale) {
             if(in_array($locale, $site_locales)) {
@@ -71,12 +71,12 @@ class LocaleRedirectorService extends BaseApplicationComponent
                 break;
             }
         }
-        
+
         // Otherwise, let's try again, removing country codes in browser locales
         if(empty($locale_match)) {
             foreach($browser_locales as $browser_locale) {
                 $browser_locale_short = substr($browser_locale, 0, 2);
-                
+
                 foreach($site_locales as $site_locale) {
                     if($site_locale == $browser_locale_short) {
                         $locale_match = $site_locale;
@@ -85,16 +85,16 @@ class LocaleRedirectorService extends BaseApplicationComponent
                 }
             }
         }
-        
+
         // Otherwise, let's try again, removing country codes in browser locales
         // and in site locales
         if(empty($locale_match)) {
             foreach($browser_locales as $browser_locale) {
                 $browser_locale_short = substr($browser_locale, 0, 2);
-                
+
                 foreach($site_locales as $site_locale) {
                     $site_locale_short = substr($site_locale, 0, 2);
-                    
+
                     if($site_locale_short == $browser_locale_short) {
                         $locale_match = $site_locale;
                         break;
@@ -102,10 +102,10 @@ class LocaleRedirectorService extends BaseApplicationComponent
                 }
             }
         }
-        
+
         return $locale_match;
     }
-    
+
     /**
      * Check if a locale can be guessed
      * @return string
@@ -114,20 +114,20 @@ class LocaleRedirectorService extends BaseApplicationComponent
     {
         $guessed_locale = null;
         $cookie_locale = $this->getCookieLocale();
-        
+
         if(!empty($cookie_locale)) {
             return $cookie_locale;
         }
-        
+
         $guessed_locale = $this->getLocaleMatch();
-        
+
         if(!empty($guessed_locale)) {
             return $guessed_locale;
         }
-        
+
         return null;
     }
-    
+
     /**
      * Get the url in a new locale
      * @param string $locale
@@ -136,32 +136,44 @@ class LocaleRedirectorService extends BaseApplicationComponent
     protected function getNewLocalizedUrl($locale)
     {
         $current_locale = CraftVariable::locale();
-        
+
         if($current_locale == $locale) {
             return null;
         }
-        
+
         $element = craft()->urlManager->getMatchedElement();
-        
+
         if(!$element) {
             return null;
         }
-        
+
         // If the element is a section/category and doesn't exist in required locale
         if($element && in_array($element->getElementType(), array(ElementType::Entry, ElementType::Category))) {
             $element_has_locale = in_array($locale, array_keys($element->locales));
-            
+
             if(!$element_has_locale) {
                 return null;
             }
         }
+
+        $criteria = craft()->elements->getCriteria($element->getElementType());
+        $criteria->id = $element->getAttribute('id');
+        $criteria->locale = $locale;
+        $entry = $criteria->first();
+
+        if(!$entry) {
+            return null;
+        }
+
+        $this->query_string['locale'] = $locale;
+        $new_localized_url = UrlHelper::getSiteUrl($entry->uri, $this->query_string, null, $locale);
         
-        $query_string['locale'] = $locale;
-        $new_localized_url = UrlHelper::getSiteUrl($this->base_url, null, null, $locale) . '?' . http_build_query($query_string);
-        
+        // By default, the homepage comes with a '__home__' string into it. Let's remove it.
+        $new_localized_url = str_replace('__home__', '', $new_localized_url);
+
         return $new_localized_url;
     }
-    
+
     /**
      * Set the locale cookie
      * @param string $locale
@@ -169,13 +181,13 @@ class LocaleRedirectorService extends BaseApplicationComponent
     protected function setCookieLocale($locale)
     {
         $cookie_locale = $this->getCookieLocale();
-        
+
         if($cookie_locale != $locale) {
             setcookie($this->cookie_name, $locale, $this->cookie_expire, '/');
             $_COOKIE[$this->cookie_name] = $locale;
         }
     }
-    
+
     /**
      * Get the value of the local cookie
      * @return string
@@ -183,7 +195,7 @@ class LocaleRedirectorService extends BaseApplicationComponent
     protected function getCookieLocale()
     {
         $cookie_locale = $_COOKIE['locale'] ?? null;
-        
+
         return $cookie_locale;
     }
 
