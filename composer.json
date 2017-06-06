@@ -1,5 +1,5 @@
 {
-	"name": "pierrestoffe/localeredirector",
+	"name": "pierrestoffe/craft-localeredirector",
 	"description": "This plugin automatically redirects visitors to their preferred locale",
 	"type": "craft-plugin",
 	"authors": [
