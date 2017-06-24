@@ -13,6 +13,10 @@
 
 namespace Craft;
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
+
 class LocaleRedirectorService extends BaseApplicationComponent
 {
     protected $base_url;
@@ -35,8 +39,10 @@ class LocaleRedirectorService extends BaseApplicationComponent
     {
         $guessed_locale = $this->query_string['locale'] ?? null;
         $new_localized_url = null;
+        $CrawlerDetect = new CrawlerDetect;
         
-        if($this->detectBot()) {
+        // If a crawler is detected, stop here
+        if($CrawlerDetect->isCrawler()) {
             return false;
         }
 
@@ -56,14 +62,6 @@ class LocaleRedirectorService extends BaseApplicationComponent
         if(!empty($new_localized_url)) {
             craft()->request->redirect($new_localized_url, true, 302);
         }
-    }
-    
-    protected function detectBot()
-    {
-        $bot_match = '/bot|crawl|slurp|spider|mediapartners/i';
-        $bot_detected = isset($_SERVER['HTTP_USER_AGENT']) && preg_match($bot_match, $_SERVER['HTTP_USER_AGENT']);
-        
-        return $bot_detected;
     }
 
     /**
