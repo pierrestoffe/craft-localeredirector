@@ -1,5 +1,9 @@
 # Locale Redirector Changelog
 
+## 1.1.0 -- 2017.06.24
+
+* Bot detection so that they are not redirected
+
 ## 1.0.0 -- 2017.06.06
 
 * More accurate localized url
