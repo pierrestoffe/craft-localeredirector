@@ -35,6 +35,10 @@ class LocaleRedirectorService extends BaseApplicationComponent
     {
         $guessed_locale = $this->query_string['locale'] ?? null;
         $new_localized_url = null;
+        
+        if($this->detectBot()) {
+            return false;
+        }
 
         // If the locale is forced by the query string
         if(!empty(craft()->request->getQuery('locale'))) {
@@ -52,6 +56,14 @@ class LocaleRedirectorService extends BaseApplicationComponent
         if(!empty($new_localized_url)) {
             craft()->request->redirect($new_localized_url, true, 302);
         }
+    }
+    
+    protected function detectBot()
+    {
+        $bot_match = '/bot|crawl|slurp|spider|mediapartners/i';
+        $bot_detected = isset($_SERVER['HTTP_USER_AGENT']) && preg_match($bot_match, $_SERVER['HTTP_USER_AGENT']);
+        
+        return $bot_detected;
     }
 
     /**
