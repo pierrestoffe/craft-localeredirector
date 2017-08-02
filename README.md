@@ -58,6 +58,7 @@ Here is an example:
 Some things to do, and ideas for potential features:
 
 * Adapt for Craft 3
+* Legacy support for PHP 5.6
 
 ## Credits
 
