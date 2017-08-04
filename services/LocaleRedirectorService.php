@@ -37,7 +37,7 @@ class LocaleRedirectorService extends BaseApplicationComponent
      */
     public function redirectCheck()
     {
-        $guessed_locale = $this->query_string['locale'] ?? null;
+        $guessed_locale = (isset($this->query_string['locale'])) ? (isset($this->query_string['locale'])) : null;
         $new_localized_url = null;
         $CrawlerDetect = new CrawlerDetect;
         
@@ -204,7 +204,7 @@ class LocaleRedirectorService extends BaseApplicationComponent
      */
     protected function getCookieLocale()
     {
-        $cookie_locale = $_COOKIE['locale'] ?? null;
+        $cookie_locale = (isset($_COOKIE['locale'])) ? $_COOKIE['locale'] : null;
 
         return $cookie_locale;
     }
