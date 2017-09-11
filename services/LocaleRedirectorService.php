@@ -37,7 +37,7 @@ class LocaleRedirectorService extends BaseApplicationComponent
      */
     public function redirectCheck()
     {
-        $guessed_locale = (isset($this->query_string['locale'])) ? (isset($this->query_string['locale'])) : null;
+        $guessed_locale = (isset($this->query_string['locale'])) ? $this->query_string['locale'] : null;
         $new_localized_url = null;
         $CrawlerDetect = new CrawlerDetect;
         
