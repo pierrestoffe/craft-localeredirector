@@ -75,15 +75,17 @@ class LocaleRedirectorService extends BaseApplicationComponent
         $site_locales = craft()->i18n->getSiteLocaleIds();
 
         // Loop through the list of available locale and find a perfect match
-        foreach($browser_locales as $locale) {
-            if(in_array($locale, $site_locales)) {
-                $locale_match = $locale;
-                break;
+        if(!empty($browser_locales)) {
+            foreach($browser_locales as $locale) {
+                if(in_array($locale, $site_locales)) {
+                    $locale_match = $locale;
+                    break;
+                }
             }
         }
 
         // Otherwise, let's try again, removing country codes in browser locales
-        if(empty($locale_match)) {
+        if(empty($locale_match) && !empty($browser_locales)) {
             foreach($browser_locales as $browser_locale) {
                 $browser_locale_short = substr($browser_locale, 0, 2);
 
@@ -98,7 +100,7 @@ class LocaleRedirectorService extends BaseApplicationComponent
 
         // Otherwise, let's try again, removing country codes in browser locales
         // and in site locales
-        if(empty($locale_match)) {
+        if(empty($locale_match) && !empty($browser_locales)) {
             foreach($browser_locales as $browser_locale) {
                 $browser_locale_short = substr($browser_locale, 0, 2);
 
