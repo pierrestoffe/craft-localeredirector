@@ -1,5 +1,9 @@
 # Locale Redirector Changelog
 
+## 1.1.1 -- 2018.02.03
+
+* Added one more check for browsers that don't expose the supported languages
+
 ## 1.1.0 -- 2017.06.24
 
 * Bot detection so that they are not redirected
