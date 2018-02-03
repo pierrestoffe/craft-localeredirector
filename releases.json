@@ -1,5 +1,13 @@
 [
     {
+        "version": "1.1.1",
+        "downloadUrl": "https://github.com/pierrestoffe/craft-localeredirector/archive/v1.1.1.zip",
+        "date": "2018-02-03T20:04:34.829Z",
+        "notes": [
+            "[Fixed] Added one more check for browsers that don't expose the supported languages"
+        ]
+    },
+    {
         "version": "1.1.0",
         "downloadUrl": "https://github.com/pierrestoffe/craft-localeredirector/archive/v1.1.0.zip",
         "date": "2017-06-24T20:44:34.829Z",
