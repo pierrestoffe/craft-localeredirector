@@ -40,7 +40,7 @@ class LocaleRedirectorService extends BaseApplicationComponent
         $guessed_locale = (isset($this->query_string['locale'])) ? $this->query_string['locale'] : null;
         $new_localized_url = null;
         $CrawlerDetect = new CrawlerDetect;
-        
+
         // If a crawler is detected, stop here
         if($CrawlerDetect->isCrawler()) {
             return false;
@@ -52,10 +52,13 @@ class LocaleRedirectorService extends BaseApplicationComponent
         } else {
             $guessed_locale = $this->getGuessedLocale();
 
-            if(!empty($guessed_locale)) {
-                $new_localized_url = $this->getNewLocalizedUrl($guessed_locale);
-                $this->setCookieLocale($guessed_locale);
+            // If we could not detect the locale, use the default locale
+            if (empty($guessed_locale)) {
+                $guessed_locale = craft()->config->get('defaultLocale', 'localeredirector');
             }
+
+            $new_localized_url = $this->getNewLocalizedUrl($guessed_locale);
+            $this->setCookieLocale($guessed_locale);
         }
 
         // Redirect (302) if redirecting to another locale is necessary
@@ -179,7 +182,7 @@ class LocaleRedirectorService extends BaseApplicationComponent
 
         $this->query_string['locale'] = $locale;
         $new_localized_url = UrlHelper::getSiteUrl($entry->uri, $this->query_string, null, $locale);
-        
+
         // By default, the homepage comes with a '__home__' string into it. Let's remove it.
         $new_localized_url = str_replace('__home__', '', $new_localized_url);
 
